@@ -42,6 +42,11 @@ ListeC init(ListeC Liste) {
 
 int neuroneAND(ListeC Entry, ListeC poids, int seuil) {
     int valeur = 0;
+    if (Entry == NULL) {
+        printf("Erreur : Aucune entree fournie.\n");
+        return -1;
+    }
+
     while (Entry != NULL && poids != NULL) {
         valeur += Entry->valeur * poids->valeur;
         printf("valeur = %d\n", valeur);
@@ -56,6 +61,12 @@ int neuroneAND(ListeC Entry, ListeC poids, int seuil) {
 
 int neuroneOR(ListeC Entry, ListeC poids, int seuil) {
     int valeur = 0;
+
+    if (Entry == NULL) {
+        printf("Erreur : Aucune entree fournie.\n");
+        return -1;
+    }
+
     while (Entry != NULL && poids != NULL) {
         valeur += Entry->valeur * poids->valeur;
         printf("valeur = %d\n", valeur);
@@ -68,15 +79,9 @@ int neuroneOR(ListeC Entry, ListeC poids, int seuil) {
     return 0;
 }
 
-int neuroneNOT(ListeC Entry, ListeC poids, int seuil) {
-    int valeur = 0;
-    while (Entry != NULL && poids != NULL) {
-        valeur += Entry->valeur * poids->valeur;
-        printf("valeur = %d\n", valeur);
-        Entry = Entry->suivant;
-        poids = poids->suivant;
-    }
-    if (valeur < seuil) {
+int neuroneNOT(int Entry, int seuil) {
+
+    if (Entry < seuil) {
         return 1;
     }
     return 0;
@@ -109,8 +114,11 @@ int main() {
     printf("\n");
 
     int seuil = 10;
-    int result = neuroneAND(Entry, poids, seuil);
-    printf("Résultat du neurone AND: %d\n", result);
-
+    int resultAND = neuroneAND(Entry, poids, seuil);
+    printf("Resultat du neurone AND: %d\n", resultAND);
+    int resultOR = neuroneOR(Entry, poids, seuil);
+    printf("Resultat du neurone OR: %d\n", resultOR);
+    int resultNOT = neuroneNOT(resultAND, resultOR);
+    printf("Résultat du neurone NOT: %d\n", resultNOT);
     return 0;
 }
