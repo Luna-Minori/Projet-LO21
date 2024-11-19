@@ -2,123 +2,77 @@
 #include <stdlib.h>
 #include <time.h>
 
-typedef struct element {
-    int valeur;
-    struct element *suivant;
-    struct element *precedent;
-} ListeChain;
+typedef struct
+{
+    int Nentry;
+    int *Entry;
+    int *poids;
+    int seuil;
+} neurone;
 
-typedef ListeChain* ListeC;
+typedef struct CN
+{
+    neurone N;
+    struct CN *suivant;
+    struct CN *precedent;
+} Coucheneurone;
 
-ListeC AjouterQ(ListeC Liste, int n) {
-    ListeChain *new = malloc(sizeof(ListeChain));
-    new->valeur = n;
+typedef Coucheneurone *ReseauNeuronne;
+
+ReseauNeuronne CreateAND(ReseauNeuronne Neurone)
+{
+    ReseauNeuronne new = malloc(sizeof(Coucheneurone));
+    new->N.poids = malloc(2 * sizeof(int));
+    new->N.Entry = malloc(2 * sizeof(int));
+    new->N.Nentry = 2;
+    new->N.poids[0] = 1;
+    new->N.poids[1] = 1;
+    new->N.Entry[0] = 1;
+    new->N.Entry[1] = 1;
+    new->N.seuil = 2;
     new->suivant = NULL;
-
-    if (Liste == NULL) {
+    if (Neurone == NULL)
+    {
         new->precedent = NULL;
         return new;
     }
 
-    ListeC temp = Liste;
-    while (temp->suivant != NULL) {
+    ReseauNeuronne temp = Neurone;
+    while (temp->suivant != NULL)
+    {
         temp = temp->suivant;
     }
     new->precedent = temp;
     temp->suivant = new;
-    return Liste;
+    return Neurone;
 }
 
-
-ListeC init(ListeC Liste) {
-    srand(time(NULL));
-    Liste = AjouterQ(Liste, rand() % 10 + 1);
-
-    for (int i = 0; i < 10; i++) {
-        Liste = AjouterQ(Liste, rand() % 10 + 1);
-    }
-    return Liste;
-}
-
-int neuroneAND(ListeC Entry, ListeC poids, int seuil) {
+int OutputNeurone(ReseauNeuronne Neurone)
+{
     int valeur = 0;
-    if (Entry == NULL) {
+    if (Neurone == NULL)
+    {
         printf("Erreur : Aucune entree fournie.\n");
         return -1;
     }
 
-    while (Entry != NULL && poids != NULL) {
-        valeur += Entry->valeur * poids->valeur;
-        printf("valeur = %d\n", valeur);
-        Entry = Entry->suivant;
-        poids = poids->suivant;
+    for (int i = 0; i < Neurone->N.Nentry; i++)
+    {
+        valeur = valeur + Neurone->N.Entry[i] * Neurone->N.poids[i];
     }
-    if (valeur > seuil) {
+    if (valeur >= Neurone->N.seuil)
+    {
         return 1;
     }
     return 0;
 }
 
-int neuroneOR(ListeC Entry, ListeC poids, int seuil) {
-    int valeur = 0;
-
-    if (Entry == NULL) {
-        printf("Erreur : Aucune entree fournie.\n");
-        return -1;
-    }
-
-    while (Entry != NULL && poids != NULL) {
-        valeur += Entry->valeur * poids->valeur;
-        printf("valeur = %d\n", valeur);
-        Entry = Entry->suivant;
-        poids = poids->suivant;
-    }
-    if (valeur >= seuil) {
-        return 1;
-    }
-    return 0;
-}
-
-int neuroneNOT(int Entry, int seuil) {
-
-    if (Entry < seuil) {
-        return 1;
-    }
-    return 0;
-}
-
-
-int main() {
-    printf("aaa\n");
-
-    ListeC Entry = NULL;
-    ListeC poids = NULL;
-
-    Entry = init(Entry);
-    poids = init(poids);
-
-    printf("Liste Entry : ");
-    ListeC temp = Entry;
-    while (temp != NULL) {
-        printf("%d ", temp->valeur);
-        temp = temp->suivant;
-    }
-    printf("\n");
-
-    printf("Liste poids : ");
-    temp = poids;
-    while (temp != NULL) {
-        printf("%d ", temp->valeur);
-        temp = temp->suivant;
-    }
-    printf("\n");
-
-    int seuil = 10;
-    int resultAND = neuroneAND(Entry, poids, seuil);
-    printf("Resultat du neurone AND: %d\n", resultAND);
-    int resultOR = neuroneOR(Entry, poids, seuil);
-    printf("Resultat du neurone OR: %d\n", resultOR);
-    int resultNOT = neuroneNOT(resultAND, resultOR);
-    printf("Résultat du neurone NOT: %d\n", resultNOT);
-    return 0;
+int main()
+{
+    ReseauNeuronne AND = NULL;
+    int l = 10;
+    AND = CreateAND(AND);
+    l = OutputNeurone(AND);
+    printf("l : %d", l);
+    return l;
 }
