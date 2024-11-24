@@ -156,9 +156,9 @@ void *Choix_Entry(int Nentrer, int *Entry)
         do
         {
             printf("\n");
-            printf("┌───────────────────────────────────────────────┐\n");
-            printf("│Choix entrer %d :                              │\n", i);
-            printf("└───────────────────────────────────────────────┘\n");
+            printf("-------------------------------------------------\n");
+            printf("-Choix entrer %d :                              -\n", i);
+            printf("-------------------------------------------------\n");
             scanf("%s", &reponse);
             choix = strtol(&reponse, NULL, 10);
         } while (choix != 0 && choix != 1);
@@ -174,14 +174,14 @@ int menu()
     do
     {
         printf("\n");
-        printf("┌───────────────────────────────────────────────┐\n");
-        printf("│Actions disponibles :                          │\n");
-        printf("├───────────────────────────────────────────────┤\n");
-        printf("│[1] - Neurone AND                              │\n");
-        printf("│[2] - Neurone OR                               │\n");
-        printf("│[3] - Neurone NOT                              │\n");
-        printf("│[4] - Expression                               │\n");
-        printf("└───────────────────────────────────────────────┘\n");
+        printf("-------------------------------------------------\n");
+        printf("- Actions disponibles :                         -\n");
+        printf("-------------------------------------------------\n");
+        printf("-[1] - Neurone AND                              -\n");
+        printf("-[2] - Neurone OR                               -\n");
+        printf("-[3] - Neurone NOT                              -\n");
+        printf("-[4] - (A ET (non B) ET C) OU (A ET (non C))    -\n");
+        printf("-------------------------------------------------\n");
         printf("\nQue souhaitez vous faire ? [1/2/3/4]\n");
         scanf("%c", &reponse);
         choixmenu = strtol(&reponse, NULL, 10);
