@@ -1,4 +1,19 @@
 fonction InitNeurone(poids ← poids, seuil ← seuil, n_Entry ← n_Entry) : Neurone
+    Entrées :
+    - poids : tableau d'entiers représentant les poids des connexions (taille : n_Entry)
+    - seuil : entier représentant le seuil de sortie du neurone
+    - n_Entry : entier représentant le nombre d'entrées du neurone
+
+    Résultat : 
+    - Un pointeur vers un objet Neurone initialisé avec les poids, seuil et nombre d'entrées
+
+    Lexique :
+    - neurone : pointeur vers le neurone initialisé
+    - poids : tableau des poids associés aux entrées du neurone
+    - seuil : seuil de sortie du neurone
+    - n_Entry : nombre d'entrées du neurone
+    - i : index utilisé pour parcourir le tableau des poids
+
     neurone ← allocation mémoire pour Neurone
     neurone.nombre_entrees ← n_Entry
     neurone.poids ← allocation mémoire pour n_Entry * Entier
@@ -11,7 +26,26 @@ fonction InitNeurone(poids ← poids, seuil ← seuil, n_Entry ← n_Entry) : Ne
     InitNeurone ← neurone
 fin fonction
 
+---
+
 fonction InitCouche(nombre_neurones ← nombre_neurones, n_Entry ← n_Entry, poids ← poids, seuil ← seuil) : Coucheneurone
+    Entrées :
+    - nombre_neurones : entier représentant le nombre de neurones dans la couche
+    - n_Entry : entier représentant le nombre d'entrées pour chaque neurone
+    - poids : tableau de tableaux d'entiers représentant les poids des neurones
+    - seuil : tableau d'entiers représentant les seuils des neurones
+
+    Résultat : 
+    - Un pointeur vers une structure Coucheneurone représentant la couche initialisée
+
+    Lexique :
+    - couche : pointeur vers la couche initialisée
+    - neurone : pointeur vers un neurone individuel
+    - poids : tableau de poids pour chaque neurone
+    - seuil : tableau de seuils pour chaque neurone
+    - n_Entry : nombre d'entrées pour chaque neurone
+    - i : index utilisé pour parcourir les neurones
+
     couche ← allocation mémoire pour Coucheneurone
     couche.nombre_neurones ← nombre_neurones
     neurone ← NULL
@@ -33,7 +67,22 @@ fonction InitCouche(nombre_neurones ← nombre_neurones, n_Entry ← n_Entry, po
     InitCouche ← couche
 fin fonction
 
+---
+
 fonction OutNeurone(neurone ← neurone, Entry ← Entry) : Entier
+    Entrées :
+    - neurone : pointeur vers un neurone dont la sortie doit être calculée
+    - Entry : tableau d'entiers représentant les entrées pour le neurone
+
+    Résultat :
+    - Retourne 1 si la somme des entrées pondérées est supérieure ou égale au seuil du neurone, sinon retourne 0
+
+    Lexique :
+    - neurone : neurone dont la sortie est calculée
+    - valeur : somme des produits des entrées et de leurs poids
+    - seuil : seuil du neurone pour déterminer la sortie
+    - i : index utilisé pour parcourir les entrées
+
     valeur ← 0
     pour i = 0 à neurone.nombre_entrees - 1 faire
         valeur ← valeur + neurone.poids[i] * Entry[i]
@@ -45,7 +94,22 @@ fonction OutNeurone(neurone ← neurone, Entry ← Entry) : Entier
     OutNeurone ← 0
 fin fonction
 
-fonction OutCouche(couche ← couche, Entry ← Entry) : Liste
+---
+
+fonction OutCouche(couche ← couche, Entry ← Entry) : Entier*
+    Entrées :
+    - couche : pointeur vers la couche dont les neurones produisent des sorties
+    - Entry : tableau d'entiers représentant les entrées pour la couche
+
+    Résultat :
+    - Retourne un tableau d'entiers représentant les sorties des neurones de la couche
+
+    Lexique :
+    - couche : couche contenant plusieurs neurones
+    - sorties : tableau des sorties des neurones
+    - tempN : pointeur temporaire utilisé pour parcourir les neurones de la couche
+    - i : index utilisé pour parcourir les neurones
+
     sorties ← allocation mémoire pour couche.nombre_neurones * Entier
     tempN ← NULL
 
@@ -59,8 +123,28 @@ fonction OutCouche(couche ← couche, Entry ← Entry) : Liste
     OutCouche ← sorties
 fin fonction
 
+---
+
 fonction CreateR(nombrecouches ← nombrecouches, Nneurone ← Nneurone, n_Entry ← n_Entry, poids ← poids, seuil ← seuil) : Reseau
-    Reseau R
+    Entrées :
+    - nombrecouches : entier représentant le nombre de couches dans le réseau
+    - Nneurone : tableau d'entiers représentant le nombre de neurones dans chaque couche
+    - n_Entry : entier représentant le nombre d'entrées pour chaque neurone
+    - poids : tableau de tableaux d'entiers représentant les poids pour chaque neurone
+    - seuil : tableau d'entiers représentant les seuils pour chaque neurone
+
+    Résultat :
+    - Un objet Reseau initialisé avec les couches et neurones définis
+
+    Lexique :
+    - R : réseau de neurones initialisé
+    - couche : pointeur vers une couche du réseau
+    - precedente : pointeur vers la couche précédente dans le réseau
+    - i : index utilisé pour parcourir les couches
+    - newcouche : pointeur vers une nouvelle couche initialisée
+
+    R.debutC ← NULL
+    R.finC ← NULL
     precedente ← NULL
 
     pour i = 0 à nombrecouches - 1 faire
@@ -79,9 +163,25 @@ fonction CreateR(nombrecouches ← nombrecouches, Nneurone ← Nneurone, n_Entry
     CreateR ← R
 fin fonction
 
-fonction OutR(R ← R, Entry ← Entry, nombrecouches ← nombrecouches) : Liste
+---
+
+fonction OutR(R ← R, Entry ← Entry, nombrecouches ← nombrecouches) : Entier*
+    Entrées :
+    - R : réseau de neurones à utiliser pour la propagation des entrées
+    - Entry : tableau d'entiers représentant les entrées pour le réseau
+    - nombrecouches : entier représentant le nombre de couches dans le réseau
+
+    Résultat :
+    - Retourne un tableau d'entiers représentant la sortie du réseau
+
+    Lexique :
+    - sorties : tableau représentant les sorties du réseau
+    - couche : pointeur vers une couche du réseau
+    - i : index utilisé pour parcourir les couches
+
     sorties ← Entry
     couche ← R.debutC
+
     pour i = 0 à nombrecouches - 1 faire
         sorties ← OutCouche(couche, sorties)
         couche ← couche.suivante
@@ -89,17 +189,27 @@ fonction OutR(R ← R, Entry ← Entry, nombrecouches ← nombrecouches) : Liste
     OutR ← sorties
 fin fonction
 
-fonction Choix_Entry(Nentrer ← Nentrer, Entry ← Entry)
-    reponse ← caractère
-    choix ← 0
+---
+
+fonction Choix_Entry(Nentrer ← Nentrer, Entry ← Entry) : Vide
+    Entrées :
+    - Nentrer : entier représentant le nombre d'entrées à saisir
+    - Entry : tableau d'entiers où les entrées seront stockées
+
+    Résultat : 
+    - Aucune valeur retournée, mais modifie le tableau Entry avec les entrées saisies
+
+    Lexique :
+    - reponse : variable de type char utilisée pour stocker la réponse de l'utilisateur
+    - choix : variable utilisée pour valider la saisie de l'utilisateur
+    - i : index utilisé pour parcourir les entrées
+
     pour i = 0 à Nentrer - 1 faire
         choix ← -1
         reponse ← 'a'
         faire
-            afficher "\n-------------------------------------------------\n"
-            afficher "-Choix entrer " i " :                              -\n"
-            afficher "-------------------------------------------------\n"
-            lire reponse
+            afficher message pour demander une entrée
+            saisir reponse
             choix ← convertir reponse en entier
         tant que choix ≠ 0 et choix ≠ 1
         Entry[i] ← choix
@@ -107,112 +217,17 @@ fonction Choix_Entry(Nentrer ← Nentrer, Entry ← Entry)
     Choix_Entry ← NULL
 fin fonction
 
+---
+
 fonction menu() : Entier
-    reponse ← caractère
+    Entrées : 
+    - Aucune
+
+    Résultat : 
+    - Retourne un entier représentant le choix du menu
+
+    Lexique :
+    - reponse : variable de type char utilisée pour stocker la réponse de l'utilisateur
+    - choixmenu : entier représentant le choix sélectionné par l'utilisateur
+
     choixmenu ← 0
-    do
-        afficher "\n-------------------------------------------------\n"
-        afficher "- Actions disponibles :                         -\n"
-        afficher "-------------------------------------------------\n"
-        afficher "-[1] - Neurone AND                              -\n"
-        afficher "-[2] - Neurone OR                               -\n"
-        afficher "-[3] - Neurone NOT                              -\n"
-        afficher "-[4] - (A ET (non B) ET C) OU (A ET (non C))    -\n"
-        afficher "-------------------------------------------------\n"
-        afficher "\nQue souhaitez vous faire ? [1/2/3/4]\n"
-        lire reponse
-        choixmenu ← convertir reponse en entier
-        switch choixmenu
-            case 1:
-                nombrecouches ← 1
-                listenombre ← [1]  // Nombre de neurone par couches
-                Nentry ← 2
-
-                // Initialisation Entrer
-                Entry ← tableau de taille Nentry
-                Choix_Entry(Nentry, Entry)
-
-                // Initialisation des poids et seuils
-                poids1 ← [1, 1]
-                poids ← [poids1]
-                seuil ← [Nentry]
-
-                R ← CreateR(nombrecouches, listenombre, Nentry, poids, seuil)  // initialise le Reseau
-                sortie ← OutR(R, Entry, nombrecouches)  // Calcule le résultat
-
-                afficher "Sortie pour A=" Entry[0] " B=" Entry[1] " de l'expression logique : A AND B est : " sortie[0]
-                break
-            case 2:
-                nombrecouches ← 1
-                listenombre ← [1]  // Nombre de neurone par couches
-                Nentry ← 2
-
-                // Initialisation Entrer
-                Entry ← tableau de taille Nentry
-                Choix_Entry(Nentry, Entry)
-
-                // Initialisation des poids et seuils
-                poids1 ← [1, 1]
-                poids ← [poids1]
-                seuil ← [1]
-
-                R ← CreateR(nombrecouches, listenombre, Nentry, poids, seuil)  // initialise le Reseau
-                sortie ← OutR(R, Entry, nombrecouches)  // Calcule le résultat
-
-                afficher "Sortie pour A=" Entry[0] " B=" Entry[1] " de l'expression logique : A OR B est : " sortie[0]
-                break
-            case 3:
-                nombrecouches ← 1
-                listenombre ← [1]  // Nombre de neurone par couches
-                Nentry ← 1
-
-                // Initialisation Entrer
-                Entry ← tableau de taille Nentry
-                Choix_Entry(Nentry, Entry)
-
-                // Initialisation des poids et seuils
-                poids1 ← [-1]
-                poids ← [poids1]
-                seuil ← [0]
-
-                R ← CreateR(nombrecouches, listenombre, Nentry, poids, seuil)  // initialise le Reseau
-                sortie ← OutR(R, Entry, nombrecouches)  // Calcule le résultat
-
-                afficher "Sortie pour A=" Entry[0] " de l'expression logique : !A est : " sortie[0]
-                break
-            case 4:
-                nombrecouches ← 3
-                listenombre ← [4, 2, 1]  // Nombre de neurone par couches
-                Nentry ← 3
-
-                // Initialisation Entrer
-                Entry ← tableau de taille Nentry
-                Choix_Entry(Nentry, Entry)
-
-                // Initialisation des poids et seuils
-                poids1 ← [1, 0, 0]
-                poids2 ← [0, -1, 0]
-                poids3 ← [0, 0, 1]
-                poids4 ← [0, 0, -1]
-                poids5 ← [1, 1, 1, 0]
-                poids6 ← [1, 0, 0, 1]
-                poids7 ← [1, 1]
-                poids ← [poids1, poids2, poids3, poids4, poids5, poids6, poids7]
-                seuil ← [1, 0, 1, 0, 3, 2, 1]
-
-                R ← CreateR(nombrecouches, listenombre, Nentry, poids, seuil)  // initialise le Reseau
-                sortie ← OutR(R, Entry, nombrecouches)  // Calcule le résultat
-
-                afficher "Sortie pour A=" Entry[0] ", B=" Entry[1] ", C=" Entry[2] " de l'expression logique : (A ET (non B) ET C) OU (A ET (non C)) est : " sortie[0]
-                break
-            default:
-                afficher "Erreur de saisie"
-        fin switch
-    tant que choixmenu ≠ 1 et choixmenu ≠ 2 et choixmenu ≠ 3 et choixmenu ≠ 4
-    menu ← choixmenu
-fin fonction
-
-fonction main() : Entier
-    menu()
-    main ← 0
-fin fonction
