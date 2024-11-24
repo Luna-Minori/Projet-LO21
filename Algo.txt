@@ -8,7 +8,7 @@ fonction InitNeurone(poids ← poids, seuil ← seuil, n_Entry ← n_Entry) : Ne
     neurone.seuil ← seuil
     neurone.suivant ← NULL
     neurone.precedent ← NULL
-    retourner neurone
+    InitNeurone ← neurone
 fin fonction
 
 fonction InitCouche(nombre_neurones ← nombre_neurones, n_Entry ← n_Entry, poids ← poids, seuil ← seuil) : Coucheneurone
@@ -30,7 +30,7 @@ fonction InitCouche(nombre_neurones ← nombre_neurones, n_Entry ← n_Entry, po
     couche.finN ← neurone
     couche.suivante ← NULL
     couche.precedente ← NULL
-    retourner couche
+    InitCouche ← couche
 fin fonction
 
 fonction OutNeurone(neurone ← neurone, Entry ← Entry) : Entier
@@ -40,9 +40,9 @@ fonction OutNeurone(neurone ← neurone, Entry ← Entry) : Entier
     fin pour
 
     si valeur ≥ neurone.seuil alors
-        retourner 1
+        OutNeurone ← 1
     fin si
-    retourner 0
+    OutNeurone ← 0
 fin fonction
 
 fonction OutCouche(couche ← couche, Entry ← Entry) : Liste
@@ -56,7 +56,7 @@ fonction OutCouche(couche ← couche, Entry ← Entry) : Liste
         sorties[i] ← OutNeurone(tempN, Entry)
         tempN ← tempN.suivant
     fin pour
-    retourner sorties
+    OutCouche ← sorties
 fin fonction
 
 fonction CreateR(nombrecouches ← nombrecouches, Nneurone ← Nneurone, n_Entry ← n_Entry, poids ← poids, seuil ← seuil) : Reseau
@@ -76,7 +76,7 @@ fonction CreateR(nombrecouches ← nombrecouches, Nneurone ← Nneurone, n_Entry
     fin pour
 
     R.finC ← precedente
-    retourner R
+    CreateR ← R
 fin fonction
 
 fonction OutR(R ← R, Entry ← Entry, nombrecouches ← nombrecouches) : Liste
@@ -86,7 +86,7 @@ fonction OutR(R ← R, Entry ← Entry, nombrecouches ← nombrecouches) : Liste
         sorties ← OutCouche(couche, sorties)
         couche ← couche.suivante
     fin pour
-    retourner sorties
+    OutR ← sorties
 fin fonction
 
 fonction Choix_Entry(Nentrer ← Nentrer, Entry ← Entry)
@@ -104,6 +104,7 @@ fonction Choix_Entry(Nentrer ← Nentrer, Entry ← Entry)
         tant que choix ≠ 0 et choix ≠ 1
         Entry[i] ← choix
     fin pour
+    Choix_Entry ← NULL
 fin fonction
 
 fonction menu() : Entier
@@ -208,8 +209,10 @@ fonction menu() : Entier
                 afficher "Erreur de saisie"
         fin switch
     tant que choixmenu ≠ 1 et choixmenu ≠ 2 et choixmenu ≠ 3 et choixmenu ≠ 4
+    menu ← choixmenu
 fin fonction
 
-fonction main()
+fonction main() : Entier
     menu()
+    main ← 0
 fin fonction
