@@ -80,7 +80,6 @@ int OutNeurone(Neurone *neurone, int *Entry)
     {
         valeur = valeur + neurone->poids[i] * Entry[i];
     }
-
     if (valeur >= neurone->seuil) // test le résultat par rapport au seuil
     {
         return 1;
@@ -402,9 +401,9 @@ int menu()
                     }
                 }
             }
-
+            choix = -1;
             int **seuils = malloc(nombrecouches * sizeof(int **));
-            for (int j = 0; j < nombrecouches; ++j) // poids
+            for (int j = 0; j < nombrecouches; ++j)
             {
                 seuils[j] = malloc(listenombre[j] * sizeof(int *));
                 for (int i = 0; i < listenombre[j]; ++i)
@@ -419,15 +418,14 @@ int menu()
                         printf("-------------------------------------------------\n");
                         scanf("%s", &reponse);
                         choix = strtol(&reponse, NULL, 10);
-                    } while (choix <= 0);
-                    seuils[i][j] = choix;
+                    } while (choix < 0);
+                    seuils[j][i] = choix;
                 }
             }
 
             // initalisation Entrer
             int Entry[nEntry];
             Choix_Entry(nEntry, Entry);
-
             Reseau R = CreateR(nombrecouches, listenombre, nEntry, poids, seuils); // initialise le Reseau
             int *sortie = OutR(R, Entry, nombrecouches);
 
