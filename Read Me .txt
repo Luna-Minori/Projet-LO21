@@ -1,1 +1,5 @@
-Hello
+Hello, this is a final projet of the algorythms corse LO21. 
+
+You can find every files for the execution here.
+
+Have a good day!
